@@ -7,7 +7,7 @@
  */
 
 import extend from 'core/prelude/extend';
-import { locale as defaultLocale } from 'core/i18n';
+import { localeData } from 'core/i18n';
 
 /** @see Sugar.Date.clone */
 extend(Date.prototype, 'clone', function (this: Date): Date {
@@ -161,7 +161,7 @@ const shortOpts = {
 };
 
 /** @see Sugar.Date.short */
-extend(Date.prototype, 'short', function (this: Date, locale: string = defaultLocale): string {
+extend(Date.prototype, 'short', function (this: Date, locale: string = localeData.locale): string {
 	return this.toLocaleString(locale, shortOpts);
 });
 
@@ -172,12 +172,12 @@ const mediumOpts = {
 };
 
 /** @see Sugar.Date.medium */
-extend(Date.prototype, 'medium', function (this: Date, locale: string = defaultLocale): string {
+extend(Date.prototype, 'medium', function (this: Date, locale: string = localeData.locale): string {
 	return this.toLocaleString(locale, mediumOpts);
 });
 
 /** @see Sugar.Date.long */
-extend(Date.prototype, 'long', function (this: Date, locale: string = defaultLocale): string {
+extend(Date.prototype, 'long', function (this: Date, locale: string = localeData.locale): string {
 	return this.toLocaleString(locale);
 });
 
@@ -219,7 +219,7 @@ const
  * @param format
  * @param [locale]
  */
-extend(Date.prototype, 'format', function (this: Date, format: string, locale: string = defaultLocale): string {
+extend(Date.prototype, 'format', function (this: Date, format: string, locale: string = localeData.locale): string {
 	const
 		cache = formatCache[format];
 

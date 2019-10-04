@@ -46,10 +46,9 @@ Object.forEach(dict, (el) => {
 /**
  * System language
  */
-export let
-	locale: string,
-	isLocaleDef: boolean,
-	isInitialized: Promise<void> = Promise.resolve();
+export let 
+	isInitialized: Promise<void> = Promise.resolve(),
+	localeData: {locale:string, isLocaleDef: boolean} = {locale: '', isLocaleDef: false};
 
 if (IS_NODE) {
 	setLocale(config.locale);
@@ -83,20 +82,20 @@ if (IS_NODE) {
  */
 export function setLocale(value: string, def?: boolean): string {
 	const
-		oldLang = locale;
+		oldLang = localeData.locale;
 
-	locale = value;
-	isLocaleDef = Boolean(def);
+	localeData.locale = value;
+	localeData.isLocaleDef = Boolean(def);
 
 	if (!IS_NODE && storage) {
 		storage.then((storage) => Promise.all([
 			storage.set('locale', value),
-			storage.set('isLocaleDef', isLocaleDef)
+			storage.set('isLocaleDef', localeData.isLocaleDef)
 		])).catch(stderr);
 	}
 
-	event.emit('setLocale', locale, oldLang);
-	return locale;
+	event.emit('setLocale', localeData.locale, oldLang);
+	return localeData.locale;
 }
 
 extend(GLOBAL, 'i18n', globalI18n);
@@ -163,7 +162,7 @@ function globalI18n(strings: unknown | string[], ...exprs: unknown[]): string {
  */
 function localI18n(val: unknown, defLang?: string): string {
 	const str = String(val);
-	defLang = defLang === undefined ? locale : defLang;
+	defLang = defLang === undefined ? localeData.locale : defLang;
 
 	if (defLang) {
 		const w = langs[defLang] && langs[defLang][str];
